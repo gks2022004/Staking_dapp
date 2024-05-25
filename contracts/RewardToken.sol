@@ -8,7 +8,4 @@ contract RewardToken is ERC20{
         _mint(msg.sender,initialSupply*10**18);
     }
 
-    function decimals() public pure override returns(uint8){
-        return 0;
-    }
 }
