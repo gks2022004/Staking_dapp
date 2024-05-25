@@ -1,6 +1,11 @@
 import { useEffect,useState } from "react";
+import { connectWallet } from "../../utils/connectWallet";
+import Web3Context from "../../context/Web3Context";
+import Button from "../Button";
+import { handleAccountChange } from "../../utils/handleAccountChange";
+import { handleChainChange } from "../../utils/handleChainChange";
 
-const Wallet=()=>{
+const Wallet=({children})=>{
     const [state,setState]=useState({
         provider:null,
         address:null,
@@ -11,12 +16,23 @@ const Wallet=()=>{
 
     const [isLoading,setIsLoading]=useState(false);
 
+    useEffect(()=>{
+        window.ethereum.on('accountsChanged',()=>handleAccountChange(setState))
+        window.ethereum.on('chainChanged',()=>handleChainChange(setState))
+
+        return()=>{
+            window.ethereum.removeListener('accountsChanged',()=>handleAccountChange(setState))
+            window.ethereum.removeListener('chainChanged',()=>handleChainChange(setState))
+        }
+    },[])
+
     const handleWallet = async()=>{
 
         try{
             setIsLoading(true);
-            const { provider,address,stakingContract,stakeToken,chainId } = await connectWallet();
-            setState({provider,address,stakingContract,stakeToken,chainId})
+            const { provider,selectedAccount,stakingContract,stakeTokenContract,chainId } = await connectWallet();
+            console.log(provider,selectedAccount,stakingContract,stakeTokenContract,chainId)
+            setState({provider,selectedAccount,stakingContract,stakeTokenContract,chainId})
 
         }catch(error){
             console.log("Error connecting wallet: ",error.message);
@@ -24,5 +40,15 @@ const Wallet=()=>{
             setIsLoading(false);
         }
     }
+    
+    return (
+    <div>
+        <Web3Context.Provider value={state}>
+            {children}
+        </Web3Context.Provider>
+        {isLoading && <p>Loading...</p>}
+        <Button onClick={handleWallet} label="Connect Wallet"/>
+        </div>
+ )
 }
 export default Wallet;
