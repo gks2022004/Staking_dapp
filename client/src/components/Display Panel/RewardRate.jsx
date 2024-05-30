@@ -1,6 +1,8 @@
 import { useState,useEffect,useContext } from "react";
 import Web3Context from "../../context/Web3Context";
 import { ethers } from "ethers";
+import { toast } from "react-hot-toast";
+import "./DisplayPanel.css";
 
 
 const RewardRate = () => {
@@ -15,14 +17,18 @@ const RewardRate = () => {
                 setRewardRate(rewardRateEth)
     
             }catch(error){
-                console.error("Error fetching data:",error.message)
+                toast.error("Error fetching reward rate");
+          console.error(error.message)
             }
         }
         stakingContract && fetchRewardRate();
     },[stakingContract,selectedAccount])
 
     return(
-        <p>Reward Rate: {rewardRate} token/second</p>
+        <div className="reward-rate">
+        <p>Reward Rate:</p>
+        <span>{rewardRate} token/sec </span>
+    </div>
     )
 }
 

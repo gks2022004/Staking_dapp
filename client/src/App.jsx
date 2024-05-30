@@ -1,5 +1,5 @@
 import './App.css'
-import ClaimReward from './components/ClaimedReward/ClaimedReward'
+import { useState } from 'react'
 import DisplayPanel from './components/Display Panel/DisplayPanel'
 import Navigation from './components/Navigation/Navigation'
 import StakeAmount from './components/StakeToken/StakeAmount'
@@ -9,23 +9,48 @@ import WithdrawStakeAmount from './components/Withdraw/Withdraw'
 import { StakingProvider } from './context/StakingContext'
 
 function App() {
+  const [displaySection, setDisplaySection] = useState("stake");
+
+  const handleButtonClick = (section) => {
+    setDisplaySection(section);
+  };
 
   return (
-    <>
+    <div className="main-section">
       <Wallet>
-      <Navigation/>
-      <StakingProvider>
-      <DisplayPanel/>
-      <StakeAmount />
-      <TokenApproval/>
-      <WithdrawStakeAmount/>
-      </StakingProvider>
-
-      <ClaimReward/>
-      
+        <Navigation />
+        <StakingProvider>
+          <DisplayPanel />
+          <div className="main-content">
+            <div className="button-section">
+              <button
+                onClick={() => handleButtonClick("stake")}
+                className={displaySection === "stake" ? "" : "active"}
+              >
+                Stake
+              </button>
+              <button
+                onClick={() => handleButtonClick("withdraw")}
+                className={displaySection === "withdraw" ? "" : "active"}
+              >
+                Withdraw
+              </button>
+            </div>
+            {displaySection === "stake" && (
+              <div className="stake-wrapper">
+                <TokenApproval />
+                <StakeAmount />
+              </div>
+            )}
+            {displaySection === "withdraw" && (
+              <div className="stake-wrapper">
+                <WithdrawStakeAmount />
+              </div>
+            )}
+          </div>
+        </StakingProvider>
       </Wallet>
-
-    </>
+    </div>
   )
 }
 

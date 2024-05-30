@@ -2,6 +2,9 @@ import { useState,useEffect,useContext } from "react";
 import Web3Context from "../../context/Web3Context";
 import { ethers } from "ethers";
 import StakingContext from "../../context/StakingContext";
+import { toast } from "react-hot-toast";
+import "./DisplayPanel.css";
+
 
 const StakedAmount = () => {
     const {stakingContract,selectedAccount}=useContext(Web3Context);
@@ -16,14 +19,17 @@ const StakedAmount = () => {
                 setStakedAmount(amountStakedEth)
 
             }catch(error){
-                console.error("Error fetching data:",error.message)
+                toast.error("Error fetching staked amount");
+                console.error(error.message)
             }
         }
         stakingContract && fetchStakedBalance();
     },[stakingContract,selectedAccount,isReload])
 
     return(
-        <p>Staked Amount: {stakedAmount}</p>
+        <div className="staked-amount">
+       <p>Staked Amount: </p> <span>{stakedAmount}</span>
+      </div>
     )
 }
 

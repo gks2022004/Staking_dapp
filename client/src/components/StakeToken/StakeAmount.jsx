@@ -1,11 +1,13 @@
-import { useState,useContext,useRef } from "react";
+import { useContext,useRef } from "react";
 import {ethers} from "ethers";
 import Button from "../Button";
 import Web3Context from "../../context/Web3Context";    
 import StakingContext from "../../context/StakingContext";
+import { toast } from "react-hot-toast";
+import "./StakeToken.css";
 
 const StakeAmount = () => {
-    const [transactionStatus,setTransactionStatus]=useState("")
+   
     const {stakingContract}=useContext(Web3Context);
     const {isReload, setIsReload} =useContext(StakingContext)
     const stakeAmountRef = useRef();
@@ -14,40 +16,48 @@ const StakeAmount = () => {
     const stakeToken=async(e)=>{
         e.preventDefault();
         const amount = stakeAmountRef.current.value.trim();
+        console.log(amount)
         if(isNaN(amount) || amount<=0){
-            console.error("Please enter a valid positive number");
+            toast.error("Please enter a valid positive number");
             return;
         }
         const amountToStake = ethers.parseUnits(amount,18).toString();
         try{
            const transaction = await stakingContract.stake(amountToStake);
-           setTransactionStatus("Transaction is in pending...")
-           const receipt = await transaction.wait();
-           if (receipt.status === 1){
-            setTransactionStatus("Transaction is Successful");
-            setIsReload(!isReload);
-            setTimeout(()=>{
-                setTransactionStatus("")
-            },5000)
-            stakeAmountRef.current.value=""
-           }else{
-            setTransactionStatus("Staking is Failed");
-           }
+           await toast.promise(transaction.wait(),
+           {
+            loading: "Transaction is pending...",
+            success: 'Transaction successful 👌',
+            error: 'Transaction failed 🤯'
+          });
+          stakeAmountRef.current.value = "";
+          setIsReload(!isReload);
+
+          // const receipt = await transaction.wait();
+          // if (receipt.status === 1){
+          //  setTransactionStatus("Transaction is Successful");
+          //  setIsReload(!isReload);
+          //  setTimeout(()=>{
+          //      setTransactionStatus("")
+          //  },5000)
+          //  stakeAmountRef.current.value=""
+          // }else{
+          //  setTransactionStatus("Staking is Failed");
+          // }
+
         }catch(error){
-            console.log("Token Approval Failed", error.message);
+          toast.error("Staking Failed");
+          console.error(error.message)
         }
     }
 
   return (
-    <div>
-        {transactionStatus && <div>{transactionStatus}</div>}
-      <form onSubmit={stakeToken}>
-        <label>Amount to Stake: </label>
-        <input type="text" ref={stakeAmountRef}></input>
-        <Button onClick={stakeToken} type="submit" label="Stake" />
-
+    
+       <form onSubmit={stakeToken} className="stake-amount-form">
+        <label className="stake-input-label">Enter Staked Amount:</label>
+        <input type="text" ref={stakeAmountRef} />
+        <Button onClick={stakeToken} type="submit" label="Stake Token" />
       </form>
-    </div>
   )
 }
 

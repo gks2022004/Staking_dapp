@@ -1,6 +1,8 @@
 import { useState,useContext,useEffect } from "react";
-import {ethers} from "ethers"
-import web3Context from "../../context/Web3Context"
+import {ethers} from "ethers";
+import { toast } from "react-hot-toast";
+import web3Context from "../../context/Web3Context";
+import "./DisplayPanel.css";
 
 const EarnedReward =()=>{
   const {stakingContract,selectedAccount}=useContext(web3Context);
@@ -16,7 +18,8 @@ const EarnedReward =()=>{
            const roundedReward = parseFloat(rewardValueEth).toFixed(2)
            setRewardVal(roundedReward)
         }catch(error){
-          console.error("Error fetching the reward:",error.message);
+          toast.error("Error fetching the reward:");
+          console.error(error.message)
         }
       }
 
