@@ -73,4 +73,10 @@
   .stake-amount-form Button:hover {
     background-color: rgb(124, 11, 126);
   }
+  .button-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
   

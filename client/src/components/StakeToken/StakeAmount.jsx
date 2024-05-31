@@ -53,11 +53,13 @@ const StakeAmount = () => {
 
   return (
     
-       <form onSubmit={stakeToken} className="stake-amount-form">
-        <label className="stake-input-label">Enter Staked Amount:</label>
-        <input type="text" ref={stakeAmountRef} />
-        <Button onClick={stakeToken} type="submit" label="Stake Token" />
-      </form>
+    <form onSubmit={stakeToken} className="stake-amount-form">
+    <label className="stake-input-label">Enter Staked Amount:</label>
+    <input type="text" ref={stakeAmountRef} />
+    <div className="button-wrapper">
+      <Button onClick={stakeToken} type="submit" label="Stake Token" />
+    </div>
+  </form>
   )
 }
 
