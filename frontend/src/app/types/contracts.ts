@@ -1,32 +1,34 @@
-import { ethers } from 'ethers';
-
-export interface StakingTokenContract extends ethers.Contract {
+import { ContractTransaction } from "ethers";
+// Define the Staking Token contract interface
+export interface StakingTokenContract {
   name(): Promise<string>;
   symbol(): Promise<string>;
   decimals(): Promise<number>;
-  totalSupply(): Promise<ethers.BigNumber>;
-  balanceOf(account: string): Promise<ethers.BigNumber>;
-  transfer(recipient: string, amount: ethers.BigNumber): Promise<boolean>;
-  allowance(owner: string, spender: string): Promise<ethers.BigNumber>;
-  approve(spender: string, amount: ethers.BigNumber): Promise<boolean>;
-  transferFrom(sender: string, recipient: string, amount: ethers.BigNumber): Promise<boolean>;
+  totalSupply(): Promise<bigint>;
+  balanceOf(account: string): Promise<bigint>;
+  transfer(recipient: string, amount: bigint): Promise<ContractTransaction>;
+  allowance(owner: string, spender: string): Promise<bigint>;
+  approve(spender: string, amount: bigint): Promise<ContractTransaction>;
+  transferFrom(sender: string, recipient: string, amount: bigint): Promise<ContractTransaction>;
 }
 
+// Reward Token inherits Staking Token
 export interface RewardTokenContract extends StakingTokenContract {}
 
-export interface StakingContract extends ethers.Contract {
+// Define the Staking contract interface
+export interface StakingContract {
   s_stakingToken(): Promise<string>;
   s_rewardToken(): Promise<string>;
-  REWARD_RATE(): Promise<ethers.BigNumber>;
-  totalStakedTokens(): Promise<ethers.BigNumber>;
-  rewardPerTokenStored(): Promise<ethers.BigNumber>;
-  lastUpdateTime(): Promise<ethers.BigNumber>;
-  stakedBalance(account: string): Promise<ethers.BigNumber>;
-  rewards(account: string): Promise<ethers.BigNumber>;
-  userRewardPerTokenPaid(account: string): Promise<ethers.BigNumber>;
-  rewardPerToken(): Promise<ethers.BigNumber>;
-  earned(account: string): Promise<ethers.BigNumber>;
-  stake(amount: ethers.BigNumber): Promise<ethers.ContractTransaction>;
-  withdrawStakedTokens(amount: ethers.BigNumber): Promise<ethers.ContractTransaction>;
-  getReward(): Promise<ethers.ContractTransaction>;
+  REWARD_RATE(): Promise<bigint>;
+  totalStakedTokens(): Promise<bigint>;
+  rewardPerTokenStored(): Promise<bigint>;
+  lastUpdateTime(): Promise<bigint>;
+  stakedBalance(account: string): Promise<bigint>;
+  rewards(account: string): Promise<bigint>;
+  userRewardPerTokenPaid(account: string): Promise<bigint>;
+  rewardPerToken(): Promise<bigint>;
+  earned(account: string): Promise<bigint>;
+  stake(amount: bigint): Promise<ContractTransaction>;
+  withdrawStakedTokens(amount: bigint): Promise<ContractTransaction>;
+  getReward(): Promise<ContractTransaction>;
 }

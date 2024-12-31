@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserProvider,Eip1193Provider } from "ethers";
 import { ethers } from 'ethers';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Button } from '@/app/components/ui/button';
+import { Input } from '@/app/components/ui/input';
 import { AlertCircle, CheckCircle } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/app/components/ui/alert';
 import { getStakeTokenContract, getStakingContract } from '@/app/utils/contractHelpers';
 import { CONTRACT_ADDRESSES } from '@/app/config/contracts';
 
@@ -85,7 +85,7 @@ const StakingInterface: React.FC = () => {
       const stakeTokenContract = getStakeTokenContract(signer);
       
       const amountToApprove = ethers.parseEther(amount);
-      const approveTx = await stakeTokenContract.approve(CONTRACT_ADDRESSES.STAKING, amountToApprove);
+      const approveTx = await stakeTokenContract.approve(CONTRACT_ADDRESSES.STAKING, amountToApprove) as ethers.ContractTransactionResponse;
       await approveTx.wait();
 
       setSuccess('Successfully approved tokens!');
@@ -113,7 +113,7 @@ const StakingInterface: React.FC = () => {
       const signer = await provider.getSigner();
       const stakingContract = getStakingContract(signer);
 
-      const stakeTx = await stakingContract.stake(amountToStake);
+      const stakeTx = await stakingContract.stake(amountToStake) as ethers.ContractTransactionResponse;
       await stakeTx.wait();
 
       setSuccess('Successfully staked tokens!');
@@ -137,7 +137,7 @@ const StakingInterface: React.FC = () => {
       const stakingContract = getStakingContract(signer);
 
       const amountToWithdraw = ethers.parseEther(amount);
-      const withdrawTx = await stakingContract.withdrawStakedTokens(amountToWithdraw);
+      const withdrawTx = await stakingContract.withdrawStakedTokens(amountToWithdraw) as ethers.ContractTransactionResponse;
       await withdrawTx.wait();
 
       setSuccess('Successfully withdrawn tokens!');
@@ -183,7 +183,7 @@ const StakingInterface: React.FC = () => {
 
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen flex items-center justify-center">
+    <div>
       <Card className="shadow-xl border border-gray-200 rounded-2xl bg-white">
         <CardHeader className="text-center border-b pb-4">
           <CardTitle className="text-3xl font-bold text-gray-800">

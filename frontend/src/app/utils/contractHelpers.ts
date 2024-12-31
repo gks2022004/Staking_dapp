@@ -11,6 +11,7 @@ import {
   REWARD_TOKEN_ABI 
 } from '../config/contracts';
 
+// Staking Contract
 export const getStakingContract = (
   signerOrProvider: ethers.Signer | ethers.Provider
 ): StakingContract => {
@@ -18,9 +19,10 @@ export const getStakingContract = (
     CONTRACT_ADDRESSES.STAKING,
     STAKING_ABI,
     signerOrProvider
-  ) as StakingContract;
+  ) as unknown as StakingContract;
 };
 
+// Staking Token Contract
 export const getStakeTokenContract = (
   signerOrProvider: ethers.Signer | ethers.Provider
 ): StakingTokenContract => {
@@ -28,9 +30,10 @@ export const getStakeTokenContract = (
     CONTRACT_ADDRESSES.STAKE_TOKEN,
     STAKE_TOKEN_ABI,
     signerOrProvider
-  ) as StakingTokenContract;
+  ) as unknown as StakingTokenContract;
 };
 
+// Reward Token Contract
 export const getRewardTokenContract = (
   signerOrProvider: ethers.Signer | ethers.Provider
 ): RewardTokenContract => {
@@ -38,5 +41,5 @@ export const getRewardTokenContract = (
     CONTRACT_ADDRESSES.REWARD_TOKEN,
     REWARD_TOKEN_ABI,
     signerOrProvider
-  ) as RewardTokenContract;
+  ) as unknown as RewardTokenContract;
 };
