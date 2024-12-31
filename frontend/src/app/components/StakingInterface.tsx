@@ -195,7 +195,8 @@ const StakingInterface: React.FC = () => {
           <div className="grid grid-cols-3 gap-6">
             <div className="p-4 bg-gradient-to-r from-blue-200 via-blue-100 to-blue-50 rounded-xl shadow-md">
               <div className="text-sm text-gray-600">Available to Stake</div>
-              <div className="text-2xl font-bold text-blue-800">{tokenBalance}</div>
+              <div className="text-2xl font-bold text-blue-800">{parseFloat(tokenBalance).toFixed(4)}</div>
+
             </div>
             <div className="p-4 bg-gradient-to-r from-green-200 via-green-100 to-green-50 rounded-xl shadow-md">
               <div className="text-sm text-gray-600">Staked Balance</div>
